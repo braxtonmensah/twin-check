@@ -1,7 +1,7 @@
 {
  "schema_version": "1.0",
  "tool": "twin-check",
- "tool_version": "1.0.1",
+ "tool_version": "1.0.2",
  "rule": "test row counts as a twin if any training sequence has Levenshtein ratio (rapidfuzz.fuzz.ratio/100) >= 0.80; exact = verbatim sequence match",
  "threshold_levenshtein_ratio": 0.8,
  "twin_at_080": 65.29,
