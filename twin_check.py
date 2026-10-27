@@ -31,7 +31,7 @@ import sys
 import numpy as np  # noqa: F401  (cdist returns a numpy array; imported so a missing install fails early)
 from rapidfuzz import fuzz, process
 
-TOOL_VERSION = "1.0.1"
+TOOL_VERSION = "1.0.2"
 VENDORED_SHA256 = "a01b9ee7f3b5c034bc6f69dc38c7a17c4d068cd21144b1574ebb8a89c56d210f"
 VENDORED_COMMIT = "50a6eb704730607abd02bf381c811c68ebd4d378"
 RULE = ("test row counts as a twin if any training sequence has Levenshtein ratio "
