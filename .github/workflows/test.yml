@@ -73,7 +73,9 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
-      - run: : > empty.fasta
+      - name: Make an empty input
+        run: |
+          : > empty.fasta
       - name: Empty input must fail, not report zero
         id: bad
         continue-on-error: true

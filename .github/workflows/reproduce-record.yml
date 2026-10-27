@@ -28,7 +28,8 @@ jobs:
         with:
           python-version: '3.12'
       - name: Install pinned dependencies for the download step (hash-checked)
-        run: python -m pip install --quiet --disable-pip-version-check --require-hashes --only-binary=:all: -r requirements.txt
+        run: |
+          python -m pip install --quiet --disable-pip-version-check --require-hashes --only-binary=:all: -r requirements.txt
       - name: Download upstream files and check MD5s
         id: prep
         run: python -I ci/prepare.py "${{ matrix.dataset }}" "$RUNNER_TEMP/data"
