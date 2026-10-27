@@ -1,0 +1,20 @@
+{
+ "schema_version": "1.0",
+ "tool": "twin-check",
+ "tool_version": "1.0.0",
+ "rule": "test row counts as a twin if any training sequence has Levenshtein ratio (rapidfuzz.fuzz.ratio/100) >= 0.80; exact = verbatim sequence match",
+ "threshold_levenshtein_ratio": 0.8,
+ "twin_at_080": 65.29,
+ "exact_overlap": 7.72,
+ "twin_rows": 1522,
+ "exact_rows": 180,
+ "n_test": 2331,
+ "n_train": 10873,
+ "n_train_unique": 10437,
+ "md5_train": "943c363a0c4efe714445e431369fa0cd",
+ "md5_test": "29a935b8c02bff4eb36d5dd02805e065",
+ "library": "rapidfuzz 3.13.0",
+ "vendored_from": "braxtonmensah/silicyte-design-loops@50a6eb704730607abd02bf381c811c68ebd4d378:thirdparty/verify_more.py#twin_rate",
+ "vendored_sha256": "a01b9ee7f3b5c034bc6f69dc38c7a17c4d068cd21144b1574ebb8a89c56d210f",
+ "note": "A twin rate is not a score inflation; nothing is retrained."
+}
