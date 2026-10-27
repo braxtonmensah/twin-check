@@ -212,3 +212,21 @@ def test_bad_input_exits_nonzero_not_zero_rate(tmp_path, capsys):
     assert code == 2
     assert not (tmp_path / "r.json").exists()
     assert "input error" in capsys.readouterr().err
+
+
+def test_utf8_bom_inputs_parse(tmp_path):
+    # Files saved by Excel or Windows editors often start with a UTF-8 BOM.
+    fa = tmp_path / "bom.fa"
+    fa.write_bytes(b"\xef\xbb\xbf>a\nACDE\n>b\nFGHI\n")
+    assert tc.read_fasta(str(fa)) == ["ACDE", "FGHI"]
+    cv = tmp_path / "bom.csv"
+    cv.write_bytes(b"\xef\xbb\xbfsequence,label\nACDE,1\n")
+    assert tc.read_csv(str(cv), "sequence") == ["ACDE"]
+
+
+def test_default_label_follows_threshold(tmp_path):
+    s = rand_seqs(10, 20, 1)
+    run(tmp_path, s, s, "--threshold", "0.90")
+    assert json.loads((tmp_path / "badge.json").read_text())["label"] == "test twins @0.90"
+    run(tmp_path, s, s)
+    assert json.loads((tmp_path / "badge.json").read_text())["label"] == "test twins @0.80"

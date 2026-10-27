@@ -116,7 +116,7 @@ jobs:
       - name: README badge URLs return HTTP 200 from img.shields.io
         run: |
           set -e
-          for name in lrgb-peptides-func amplify-positives flip-meltome-mixed; do
+          for name in lrgb-peptides-func amplify-positives flip-meltome-mixed lrgb-corrected-v1; do
             want=$(python3 -c "import json;print(json.load(open('badges/$name.json'))['message'])")
             url="https://img.shields.io/endpoint?url=https://raw.githubusercontent.com/${{ github.repository }}/badges/badges/$name.json"
             ok=0

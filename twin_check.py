@@ -31,7 +31,7 @@ import sys
 import numpy as np  # noqa: F401  (cdist returns a numpy array; imported so a missing install fails early)
 from rapidfuzz import fuzz, process
 
-TOOL_VERSION = "1.0.0"
+TOOL_VERSION = "1.0.1"
 VENDORED_SHA256 = "a01b9ee7f3b5c034bc6f69dc38c7a17c4d068cd21144b1574ebb8a89c56d210f"
 VENDORED_COMMIT = "50a6eb704730607abd02bf381c811c68ebd4d378"
 RULE = ("test row counts as a twin if any training sequence has Levenshtein ratio "
@@ -92,7 +92,7 @@ def twin_rate_early_exit(train, test, thr):
 
 # ----------------------------------------------------------------- input parsing
 def read_fasta(path):
-    with open(path, "r", encoding="utf-8", errors="replace") as fh:
+    with open(path, "r", encoding="utf-8-sig", errors="replace") as fh:
         text = fh.read()
     if not text.strip():
         raise InputError(f"{path}: file is empty")
@@ -124,7 +124,7 @@ def read_fasta(path):
 def read_csv(path, column):
     if not column:
         raise InputError("format is csv but no column was given")
-    with open(path, "r", encoding="utf-8", errors="replace", newline="") as fh:
+    with open(path, "r", encoding="utf-8-sig", errors="replace", newline="") as fh:
         text = fh.read()
     if not text.strip():
         raise InputError(f"{path}: file is empty")
@@ -240,7 +240,10 @@ def main(argv=None):
     if abs(thr - 0.80) > 1e-12:
         record["twin_at_080"] = None
         record["twin_at_threshold"] = round(twin_pct, 2)
-    badge = {"schemaVersion": 1, "label": str(a.label), "message": f"{twin_s}%",
+    label = str(a.label)
+    if label == "test twins @0.80" and abs(thr - 0.80) > 1e-12:
+        label = f"test twins @{thr:.2f}"   # do not show the default 0.80 label for another threshold
+    badge = {"schemaVersion": 1, "label": label, "message": f"{twin_s}%",
              "color": color_for(twin_pct)}
 
     summary = "\n".join([

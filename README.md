@@ -48,7 +48,12 @@ Outputs: `twin_rate`, `exact_rate` (percent, two decimals), `n_train`, `n_test`.
 
 Inputs that would otherwise read as a silent zero stop the step with an error instead: an empty file, sequence
 lines before any FASTA header, a header with no sequence, duplicate FASTA headers, duplicate CSV column
-names, a missing CSV column, an empty sequence cell, or a header-only CSV. Wrapped FASTA lines are joined.
+names, a missing CSV column, an empty sequence cell, or a header-only CSV. Wrapped FASTA lines are joined
+and a leading UTF-8 byte order mark is ignored. Sequences are otherwise compared exactly as given: case
+matters and nothing is normalized, so uppercase both splits first if your files mix case.
+
+This repo's CI runs the action on `ubuntu-latest` only. The install step uses the venv's `bin/python`, so it
+expects a Linux or macOS runner; Windows runners are not supported.
 
 ### Badge colors
 
@@ -73,6 +78,8 @@ values in the live record to two decimals:
 The same job runs the action on LRGB with `fail-above: 1` and asserts that the step fails. The LRGB and FLIP MD5s
 are the ones in the record's write-up (the LRGB pair also matches LRGB's own loader). The record does not list
 MD5s for the AMPlify files; this repo pinned them on 2026-10-27, and both files last changed upstream on 2022-07-03.
+This repo redistributes none of the benchmark files: CI downloads them from their own hosts at run time, under
+their own licenses. The `badges` branch holds only the computed numbers and the input MD5s.
 
 Other controls in [`test.yml`](.github/workflows/test.yml): test equal to train gives 100.00% twins and 100.00%
 exact; seeded disjoint random sequences give 0.00%; one-substitution mutants of 20-mers (ratio 0.95) give
