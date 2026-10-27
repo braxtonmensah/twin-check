@@ -1,0 +1,95 @@
+name: 'twin-check: sequence near-twin leakage'
+description: 'Fraction of test sequences with a training sequence at Levenshtein ratio >= 0.80, plus exact overlap. Writes a step summary, a JSON record and a shields badge.'
+author: 'Silicyte'
+branding:
+  icon: 'copy'
+  color: 'blue'
+
+inputs:
+  train:
+    description: 'Path to the training split (FASTA or CSV).'
+    required: true
+  test:
+    description: 'Path to the test split (FASTA or CSV).'
+    required: true
+  format:
+    description: 'fasta or csv.'
+    required: false
+    default: 'fasta'
+  column:
+    description: 'Sequence column name, used when format is csv.'
+    required: false
+    default: ''
+  threshold:
+    description: 'Levenshtein ratio threshold for a near-twin.'
+    required: false
+    default: '0.80'
+  fail-above:
+    description: 'Fail the step if the twin rate (percent) is above this. Empty means never fail.'
+    required: false
+    default: ''
+  badge-path:
+    description: 'Where to write the shields.io endpoint JSON.'
+    required: false
+    default: '.twin-check/badge.json'
+  record-path:
+    description: 'Where to write the JSON record.'
+    required: false
+    default: '.twin-check/record.json'
+  summary-path:
+    description: 'Where to write a copy of the markdown summary.'
+    required: false
+    default: '.twin-check/summary.md'
+  label:
+    description: 'Badge label.'
+    required: false
+    default: 'test twins @0.80'
+
+outputs:
+  twin_rate:
+    description: 'Percent of test rows with a training row at ratio >= threshold, two decimals.'
+    value: ${{ steps.run.outputs.twin_rate }}
+  exact_rate:
+    description: 'Percent of test rows with an exact training match, two decimals.'
+    value: ${{ steps.run.outputs.exact_rate }}
+  n_train:
+    description: 'Training rows read.'
+    value: ${{ steps.run.outputs.n_train }}
+  n_test:
+    description: 'Test rows read.'
+    value: ${{ steps.run.outputs.n_test }}
+
+runs:
+  using: 'composite'
+  steps:
+    - name: Set up Python
+      uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065 # v5.6.0
+      with:
+        python-version: '3.12'
+        update-environment: false
+      id: py
+    - name: Install pinned dependencies (hash-checked)
+      shell: bash
+      run: |
+        "${{ steps.py.outputs.python-path }}" -m venv "$RUNNER_TEMP/twin-check-venv"
+        "$RUNNER_TEMP/twin-check-venv/bin/python" -m pip install --quiet --disable-pip-version-check \
+          --require-hashes --only-binary=:all: -r "$GITHUB_ACTION_PATH/requirements.txt"
+    - name: Run twin-check
+      id: run
+      shell: bash
+      env:
+        TC_TRAIN: ${{ inputs.train }}
+        TC_TEST: ${{ inputs.test }}
+        TC_FORMAT: ${{ inputs.format }}
+        TC_COLUMN: ${{ inputs.column }}
+        TC_THRESHOLD: ${{ inputs.threshold }}
+        TC_FAIL_ABOVE: ${{ inputs.fail-above }}
+        TC_BADGE: ${{ inputs.badge-path }}
+        TC_RECORD: ${{ inputs.record-path }}
+        TC_SUMMARY: ${{ inputs.summary-path }}
+        TC_LABEL: ${{ inputs.label }}
+      run: |
+        "$RUNNER_TEMP/twin-check-venv/bin/python" -I "$GITHUB_ACTION_PATH/twin_check.py" \
+          --train "$TC_TRAIN" --test "$TC_TEST" --format "$TC_FORMAT" --column "$TC_COLUMN" \
+          --threshold "$TC_THRESHOLD" --fail-above "$TC_FAIL_ABOVE" --badge-path "$TC_BADGE" \
+          --record-path "$TC_RECORD" --summary-path "$TC_SUMMARY" --label "$TC_LABEL"

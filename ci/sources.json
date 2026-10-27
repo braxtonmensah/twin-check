@@ -1,0 +1,38 @@
+{
+  "$comment": "Upstream split files used by the published record (https://silicyte.com/data/leakage-measurements.json), with the URLs the record's scripts download (braxtonmensah/silicyte-design-loops@50a6eb7 thirdparty/verify_thirdparty.py and verify_more.py). md5_source says where each pinned MD5 comes from.",
+  "record_url": "https://silicyte.com/data/leakage-measurements.json",
+  "datasets": {
+    "lrgb-peptides-func": {
+      "record_id": 1,
+      "label": "LRGB Peptides-func twins @0.80",
+      "files": {
+        "data": {"url": "https://www.dropbox.com/s/ol2v01usvaxbsr8/peptide_multi_class_dataset.csv.gz?dl=1", "md5": "701eb743e899f4d793f0e13c8fa5a1b4", "md5_source": "RESULT_THIRDPARTY_LEAKAGE.md and LRGB's own loader"},
+        "split": {"url": "https://www.dropbox.com/s/j4zcnx2eipuo0xz/splits_random_stratified_peptide.pickle?dl=1", "md5": "5a0114bdadc80b94fc7ae974f13ef061", "md5_source": "RESULT_THIRDPARTY_LEAKAGE.md and LRGB's own loader"}
+      }
+    },
+    "lrgb-corrected-v1": {
+      "record_id": null,
+      "expected_twin_pct": 0.0,
+      "label": "LRGB corrected split twins @0.80",
+      "files": {
+        "data": {"url": "https://www.dropbox.com/s/ol2v01usvaxbsr8/peptide_multi_class_dataset.csv.gz?dl=1", "md5": "701eb743e899f4d793f0e13c8fa5a1b4", "md5_source": "as above"},
+        "split": {"url": "https://silicyte.com/data/lrgb-corrected-v1/lrgb_peptides_func_singlelinkage080.json", "md5": "b5751ec51e80fa7fb5aba12016de81fb", "md5_source": "bytes served by silicyte.com on 2026-10-27; file states rebuilt_twin_pct 0.0"}
+      }
+    },
+    "amplify-positives": {
+      "record_id": 2,
+      "label": "AMPlify positives twins @0.80",
+      "files": {
+        "train": {"url": "https://raw.githubusercontent.com/bcgsc/AMPlify/master/data/AMPlify_AMP_train_common.fa", "md5": "67470a4ac0e0356c2f756ce2831a536d", "md5_source": "pinned 2026-10-27 by this repo; the record does not list it. Upstream file last changed 2022-07-03 (bcgsc/AMPlify b577f7a)"},
+        "test": {"url": "https://raw.githubusercontent.com/bcgsc/AMPlify/master/data/AMPlify_AMP_test_common.fa", "md5": "9251af687acaa4b55db56a656d8f33bd", "md5_source": "pinned 2026-10-27 by this repo; the record does not list it. Upstream file last changed 2022-07-03 (bcgsc/AMPlify b577f7a)"}
+      }
+    },
+    "flip-meltome-mixed": {
+      "record_id": 6,
+      "label": "FLIP meltome mixed twins @0.80",
+      "files": {
+        "zip": {"url": "https://github.com/J-SNACKKB/FLIP/raw/main/splits/meltome/splits.zip", "md5": "72b9257e8d6714d203c64bedaef0724e", "md5_source": "RESULT_THIRDPARTY_LEAKAGE.md addendum 2"}
+      }
+    }
+  }
+}

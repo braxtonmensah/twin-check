@@ -1,0 +1,12 @@
+# Copy to .github/workflows/twin-check.yml in your repo and point train/test at your split.
+name: twin-check
+on: [push, pull_request]
+jobs:
+  twin-check:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
+      - uses: braxtonmensah/twin-check@v1
+        with:
+          train: tests/fixtures/example_train.fasta
+          test: tests/fixtures/example_test.fasta
